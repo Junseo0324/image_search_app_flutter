@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/di/app_module.dart';
+import 'package:image_search_app/core/navigation/router.dart';
 import 'package:image_search_app/presentation/list/list_root.dart';
 
 void main() {
@@ -12,12 +13,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp.router(
       title: 'Flutter Demo',
       theme: ThemeData(
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: ListRoot(viewModel: getIt()),
+      routerConfig: router,
     );
   }
 }
