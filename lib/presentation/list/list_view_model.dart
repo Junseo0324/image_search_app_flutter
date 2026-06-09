@@ -18,8 +18,8 @@ class ListViewModel extends ChangeNotifier {
   Stream<ListEvent> get eventStream => _eventController.stream;
 
 
-  ListViewModel({required GetPhotosUseCase getPhtoUseCase})
-    : _getPhotosUseCase = getPhtoUseCase;
+  ListViewModel({required GetPhotosUseCase getPhotoUseCase})
+    : _getPhotosUseCase = getPhotoUseCase;
 
   Future<void> onAction(ListAction action) async {
     switch (action) {

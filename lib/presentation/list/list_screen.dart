@@ -35,10 +35,15 @@ class ListScreen extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
+              onChanged: (value) {
+                onAction(ListAction.onChangeQuery(value));
+              },
               decoration: InputDecoration(
                 hintText: '검색어를 입력하세요',
                 suffixIcon: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    onAction(ListAction.onClickSearch());
+                  },
                   icon: const Icon(Icons.search),
                 ),
                 border: const OutlineInputBorder(),
