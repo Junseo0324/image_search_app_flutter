@@ -2,20 +2,29 @@
 
 import 'package:flutter/material.dart';
 import 'package:image_search_app/data/repository/mock_photo_repository_impl.dart';
+import 'package:image_search_app/presentation/list/list_action.dart';
 import 'package:image_search_app/presentation/list/list_state.dart';
-
-import '../../domain/model/photo.dart';
 import '../components/photo_item.dart';
 
 void main() async {
   final photos = await MockPhotoRepositoryImpl().fetchPhotos('query');
-  runApp(MaterialApp(home: ListScreen(state: ListState(photos: photos, isLoading: false))));
+  runApp(
+    MaterialApp(
+      home: ListScreen(
+        state: ListState(photos: photos),
+        onAction: (ListAction action) {
+          print(action);
+        },
+      ),
+    ),
+  );
 }
 
 class ListScreen extends StatelessWidget {
   final ListState state;
+  final void Function(ListAction) onAction;
 
-  const ListScreen({super.key, required this.state});
+  const ListScreen({super.key, required this.state, required this.onAction});
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +55,12 @@ class ListScreen extends StatelessWidget {
               ),
               itemBuilder: (context, index) {
                 final photo = state.photos[index];
-                return PhotoItem(photo: photo);
+                return GestureDetector(
+                  child: PhotoItem(photo: photo),
+                  onTap: () {
+                    onAction(ListAction.onClickPhotoItem(photo.id));
+                  },
+                );
               },
             ),
           ),
