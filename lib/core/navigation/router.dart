@@ -18,7 +18,7 @@ final router = GoRouter(
       GoRoute(
           path: '/detail',
           builder: (context, state) {
-            return DetailScreen(id: int.parse(state.pathParameters['id']!));
+            return DetailScreen(id: int.parse(state.uri.queryParameters['id']!));
           },
       ),
     ]
