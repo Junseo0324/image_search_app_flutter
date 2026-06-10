@@ -2,6 +2,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
 import 'package:image_search_app/data/data_source/pixabay_photo_data_source_impl.dart';
 import 'package:image_search_app/data/repository/mock_photo_repository_impl.dart';
+import 'package:image_search_app/data/repository/native_photo_repository_impl.dart';
 import 'package:image_search_app/data/repository/photo_repository_impl.dart';
 import 'package:image_search_app/domain/repository/photo_repository.dart';
 import 'package:image_search_app/domain/use_case/get_photos_use_case.dart';
@@ -16,8 +17,9 @@ Future<void> diSetup() async {
   final realRepository = PhotoRepositoryImpl(
       PixabayPhotoDataSourceImpl(apiKey: dotenv.env['API_KEY'] ?? '')
   );
+  final nativeRepository = NativePhotoRepositoryImpl();
 
-  getIt.registerSingleton<PhotoRepository>(realRepository);
+  getIt.registerSingleton<PhotoRepository>(nativeRepository);
   getIt.registerSingleton<GetPhotosUseCase>(
     GetPhotosUseCase(photoRepository: getIt()),
   );

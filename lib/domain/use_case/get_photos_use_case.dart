@@ -12,7 +12,7 @@ class GetPhotosUseCase {
 
   Future<Result<List<Photo>>> execute(String query) async {
     try {
-      final photos = await _photoRepository.fetchPhotos(query);
+      final List<Photo> photos = await _photoRepository.fetchPhotos(query);
       return Result.success(photos);
     } catch (e) {
       return Result.error(e.toString());
