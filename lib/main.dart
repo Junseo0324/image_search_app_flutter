@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:image_search_app/core/di/app_module.dart';
 import 'package:image_search_app/core/navigation/router.dart';
-import 'package:image_search_app/presentation/list/list_root.dart';
 
-void main() {
-  diSetup();
+void main() async {
+
+  await diSetup();
   runApp(const MyApp());
 }
 

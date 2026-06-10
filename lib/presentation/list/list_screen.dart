@@ -50,7 +50,7 @@ class ListScreen extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
+          state.isLoading ? Center(child: CircularProgressIndicator()): Expanded(
             child: GridView.builder(
               itemCount: state.photos.length,
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
