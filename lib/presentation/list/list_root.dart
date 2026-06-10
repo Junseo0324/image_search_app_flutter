@@ -1,26 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:image_search_app/presentation/list/list_action.dart';
+import 'package:image_search_app/presentation/list/list_event.dart';
 import 'package:image_search_app/presentation/list/list_screen.dart';
 import 'package:image_search_app/presentation/list/list_view_model.dart';
-import '../../data/repository/mock_photo_repository_impl.dart';
-import '../../domain/use_case/get_photos_use_case.dart';
 
-void main() {
-  runApp(
-    MaterialApp(
-      home: ListRoot(
-        viewModel: ListViewModel(
-          getPhotoUseCase: GetPhotosUseCase(
-            photoRepository: MockPhotoRepositoryImpl(),
-          ),
-        ),
-        onClickPhotoItem: (id) {},
-      ),
-    ),
-  );
-}
-
-class ListRoot extends StatelessWidget {
+class ListRoot extends StatefulWidget {
   final ListViewModel viewModel;
   final void Function(int id)? onClickPhotoItem;
 
@@ -31,18 +17,50 @@ class ListRoot extends StatelessWidget {
   });
 
   @override
+  State<ListRoot> createState() => _ListRootState();
+}
+
+class _ListRootState extends State<ListRoot> {
+  StreamSubscription? _subscription;
+  @override
+  void initState() {
+    super.initState();
+
+    // 1번 실행
+    _subscription = widget.viewModel.eventStream.listen((event) {
+      switch (event) {
+        case ShowSnackbar():
+          if (mounted) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(event.message),
+                duration: Duration(seconds: 2),
+              ),
+            );
+          }
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _subscription?.cancel();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return ListenableBuilder(
-      listenable: viewModel,
-      builder: (context, widget) {
-        final state = viewModel.state;
+      listenable: widget.viewModel,
+      builder: (context, _) {
+        final state = widget.viewModel.state;
         return ListScreen(
           state: state,
           onAction: (action) {
             if (action is OnClickPhotoItem) {
-              onClickPhotoItem?.call(action.id);
+              widget.onClickPhotoItem?.call(action.id);
             }
-            viewModel.onAction(action);
+            widget.viewModel.onAction(action);
           },
         );
       },

@@ -36,6 +36,9 @@ class ListViewModel extends ChangeNotifier {
             _state = state.copyWith(photos: result.data, isLoading: false);
             notifyListeners();
           case Error<List<Photo>>():
+            _state = state.copyWith(isLoading: false);
+            notifyListeners();
+
             _eventController.add(ListEvent.showSnackbar('뭔가 에러'));
         }
       case OnClickPhotoItem():
